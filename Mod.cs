@@ -10,21 +10,21 @@ namespace AchievementEnabler
 {
     public class Mod : IMod
     {
-        public static ILog _log = LogManager.GetLogger($"{nameof(AchievementEnabler)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
+        public static ILog LOG = LogManager.GetLogger($"{nameof(AchievementEnabler)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            _log.Info(nameof(OnLoad));
+            LOG.Info(nameof(OnLoad));
 
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
-                _log.Info($"Current mod asset at {asset.path}");
+                LOG.Info($"Current mod asset at {asset.path}");
 
             World.DefaultGameObjectInjectionWorld.CreateSystem<UnlockerSystem>();
         }
 
         public void OnDispose()
         {
-            _log.Info(nameof(OnDispose));
+            LOG.Info(nameof(OnDispose));
         }
     }
 
@@ -35,11 +35,11 @@ namespace AchievementEnabler
             PlatformManager.instance.achievementsEnabled = true;
             PlatformManager.instance.onAchievementUpdated += (backend, id) =>
             {
-                Mod._log.Info($"Achievement updated: {id}");
+                Mod.LOG.Info($"Achievement updated: {id}");
                 PlatformManager.instance.GetAchievement(id, out var achi);
                 PlatformManager.instance.IndicateAchievementProgress(id,achi.progress);
             };
-            Mod._log.Info("Achievements enabled");
+            Mod.LOG.Info("Achievements enabled");
         }
 
         protected override void OnUpdate() 
